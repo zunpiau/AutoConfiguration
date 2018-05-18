@@ -17,6 +17,8 @@
 package io.github.zunpiau.utils;
 
 import javax.annotation.Nullable;
+import java.beans.PropertyEditor;
+import java.beans.PropertyEditorManager;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
@@ -56,25 +58,9 @@ public class ReflectionUtil {
     }
 
     private static Object cast(String value, Class clazz) {
-        if (clazz.equals(int.class)) {
-            return Integer.parseInt(value);
-        } else if (clazz.equals(long.class)) {
-            return Long.parseLong(value);
-        } else if (clazz.equals(double.class)) {
-            return Double.parseDouble(value);
-        } else if (clazz.equals(float.class)) {
-            return Float.parseFloat(value);
-        } else if (clazz.equals(boolean.class)) {
-            return Boolean.parseBoolean(value);
-        } else if (clazz.equals(byte.class)) {
-            return Byte.parseByte(value);
-        } else if (clazz.equals(char.class)) {
-            if (value.length() > 1)
-                throw new IllegalArgumentException("[" + value + "has too mach character");
-            return value.charAt(0);
-        } else if (clazz.equals(short.class)) {
-            return Short.parseShort(value);
-        } else return value;
+        PropertyEditor editor = PropertyEditorManager.findEditor(clazz);
+        editor.setAsText(value);
+        return editor.getValue();
     }
 
 }

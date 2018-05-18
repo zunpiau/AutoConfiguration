@@ -10,7 +10,7 @@ public class Person {
     static final String PREFIX = "person.";
     static final String VALUE = "classpath:person.properties";
     @Value
-    private int age;
+    private Integer age;
     @Value
     private String name;
     @Value("short")
@@ -18,7 +18,7 @@ public class Person {
     @Value("double")
     private double aDouble;
     @Value("char")
-    private char aChar;
+    private Character aChar;
     @Value("boolean")
     private boolean aBoolean;
 

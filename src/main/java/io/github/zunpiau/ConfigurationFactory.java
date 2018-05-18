@@ -1,9 +1,11 @@
 package io.github.zunpiau;
 
+import io.github.zunpiau.utils.CharEditor;
 import io.github.zunpiau.utils.FileWatcher;
 import io.github.zunpiau.utils.PropertyUtil;
 import io.github.zunpiau.utils.ReflectionUtil;
 
+import java.beans.PropertyEditorManager;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Path;
@@ -20,6 +22,9 @@ public class ConfigurationFactory {
     public ConfigurationFactory() {
         classMap = new HashMap<>(4);
         instanceMap = new HashMap<>();
+        if (PropertyEditorManager.findEditor(Character.class) == null) {
+            PropertyEditorManager.registerEditor(Character.class, CharEditor.class);
+        }
     }
 
     @SuppressWarnings("unchecked")
