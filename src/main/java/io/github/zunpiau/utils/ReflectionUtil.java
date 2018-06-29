@@ -21,6 +21,7 @@ import java.beans.PropertyEditor;
 import java.beans.PropertyEditorManager;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
@@ -40,6 +41,15 @@ public class ReflectionUtil {
         field.set(target, cast(value, valueClass));
     }
 
+    public static void setValue(Field field, Object target, String[] value, Class<?> componentClass) throws IllegalAccessException {
+        setAccessible(field);
+        if (componentClass.equals(String.class)) {
+            field.set(target, value);
+        } else {
+            field.set(target, cast(value, componentClass));
+        }
+    }
+
     /**
      * @author Juergen Hoeller
      * @author Rob Harrop
@@ -51,8 +61,8 @@ public class ReflectionUtil {
      */
     private static void setAccessible(Field field) {
         if ((!Modifier.isPublic(field.getModifiers()) ||
-                !Modifier.isPublic(field.getDeclaringClass().getModifiers()) ||
-                Modifier.isFinal(field.getModifiers())) && !field.isAccessible()) {
+             !Modifier.isPublic(field.getDeclaringClass().getModifiers()) ||
+             Modifier.isFinal(field.getModifiers())) && !field.isAccessible()) {
             field.setAccessible(true);
         }
     }
@@ -61,6 +71,16 @@ public class ReflectionUtil {
         PropertyEditor editor = PropertyEditorManager.findEditor(clazz);
         editor.setAsText(value);
         return editor.getValue();
+    }
+
+    private static Object cast(String[] value, Class clazz) {
+        Object objects = Array.newInstance(clazz, value.length);
+        PropertyEditor editor = PropertyEditorManager.findEditor(clazz);
+        for (int i = 0; i < value.length; i++) {
+            editor.setAsText(value[i]);
+            Array.set(objects, i, editor.getValue());
+        }
+        return objects;
     }
 
 }

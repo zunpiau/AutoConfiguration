@@ -22,7 +22,7 @@ public class ConfigurationFactoryTest {
     }
 
     @Test
-    public void testSingleton() throws IllegalAccessException, IOException, InstantiationException, InterruptedException {
+    public void testSingleton() throws IllegalAccessException, IOException, InstantiationException {
         ConfigurationFactory factory = new ConfigurationFactory();
         assertSame(factory.create(Person.class), factory.create(Person.class));
         ConfigurationFactory otherFactor = new ConfigurationFactory();
@@ -37,5 +37,7 @@ public class ConfigurationFactoryTest {
         assertEquals(1, person.getShort());
         assertTrue(person.isBoolean());
         assertEquals(0, person.getIgnore());
+        assertArrayEquals(new String[]{"Ada", "Helen"}, person.getFriends());
+        assertArrayEquals(new int[]{11, 0}, person.getNumbers());
     }
 }

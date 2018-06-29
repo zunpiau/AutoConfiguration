@@ -97,7 +97,12 @@ public class ConfigurationFactory {
             if (!properties.containsKey(key)) {
                 throw new IllegalArgumentException("[" + key + "] not found in [" + path + "]");
             }
-            ReflectionUtil.setValue(field, t, properties.getProperty(key), field.getType());
+            Class filedType = field.getType();
+            if (filedType.isArray()) {
+                ReflectionUtil.setValue(field, t, properties.getProperty(key).split(","), filedType.getComponentType());
+            } else {
+                ReflectionUtil.setValue(field, t, properties.getProperty(key), filedType);
+            }
         }
     }
 

@@ -21,7 +21,10 @@ public class Person {
     private Character aChar;
     @Value("boolean")
     private boolean aBoolean;
-
+    @Value
+    private String[] friends;
+    @Value
+    private int[] numbers;
     private long ignore;
 
     public Person() {
@@ -55,4 +58,11 @@ public class Person {
         return aChar;
     }
 
+    public String[] getFriends() {
+        return friends;
+    }
+
+    public int[] getNumbers() {
+        return numbers;
+    }
 }
